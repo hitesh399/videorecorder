@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/videorecorder.js",
   "scripts": {
-    "build": "babel src/index.js -o videorecorder.js"
+    "build": "babel src/index.js -o dist/videorecorder.js"
   },
   "keywords": ["Video recorder", "js video recorder"],
   "author": "",
