@@ -19,7 +19,7 @@ yarn add js-video-recorder
 ```
 import videorecorder from  'js-video-recorder'
 
-const  vr = videorecorder('video_preview_id', 'video_player_id', { video: true, audio: true  })
+const  vr = videorecorder('video_player_id', { video: true, audio: true  })
 vr.start() to start the recording
 vr.stop()
 vr.pause()

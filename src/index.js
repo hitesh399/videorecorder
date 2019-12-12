@@ -1,15 +1,14 @@
 class VideoRecorder {
 
-	constructor(videoPreviewId = 'preview', videoRecordingId = 'recording', mediaOption = {
+	constructor(videoPreviewId = 'preview', mediaOption = {
 		video: true,
 		audio: true
 	}) {
 
+		this.recording  = null;
 		this.videoPreviewId = videoPreviewId
-		this.videoRecordingId = videoRecordingId
 		this.mediaSetting = mediaOption
 		this.preview = document.getElementById(this.videoPreviewId);
-		this.recording = document.getElementById(this.videoRecordingId);
 		this.data = [];
 		this.recorder = null;
 	}
@@ -21,7 +20,9 @@ class VideoRecorder {
 		return typeof MediaRecorder === 'function' && typeof navigator.mediaDevices === 'object'
 	}
 	start() {
-
+		this.recording = document.createElement("video");		
+		this.preview.removeAttribute('controls')
+		this.preview.play()
 		navigator.mediaDevices.getUserMedia(this.mediaSetting)
 			.then(stream => {
 				this.preview.srcObject = stream;
@@ -31,9 +32,11 @@ class VideoRecorder {
 
 	}
 	pause() {
+		this.preview.pause()
 		this._pauseRecorder();
 	}
 	resume() {
+		this.preview.play()
 		this._resume();
 	}
 	download(fileName) {
@@ -60,7 +63,7 @@ class VideoRecorder {
 
 	_resume() {
 		if (this.recorder) {
-			console.log('Test dshgjdff 1', this.data)
+			this.preview.removeAttribute('controls')
 			this.recorder.resume();
 		} else {
 			this.start();
@@ -73,21 +76,18 @@ class VideoRecorder {
 		this.recording.src = URL.createObjectURL(recordedBlob);
 	}
 	_download(fileName) {
-		console.log('Te1 XYZ')
 		if (!this.recorder) {
-			console.log('Te1')
 			return;
 		}
 		return this._blob()
 			.then(recordedBlob => {
-				console.log('Te2', recordedBlob)
 				let downloadButton = document.createElement("a");
 				document.body.appendChild(downloadButton);
 				downloadButton.style = "display: none";
-				downloadButton.href = recording.src;
+				downloadButton.href = this.recording.src;
 				downloadButton.download = fileName + '.webm';
 				downloadButton.click();
-				window.URL.revokeObjectURL(recording.src);
+				window.URL.revokeObjectURL(this.recording.src);
 			})
 	}
 	_blob() {
@@ -112,9 +112,16 @@ class VideoRecorder {
 				this.recorder = null;
 				this.data = [];
 				this.preview.srcObject.getTracks().forEach(track => track.stop());
+				this.preview.srcObject = null;
+				this.preview.src = this.recording.src
+				this.recording.remove();
+				this.preview.setAttribute('controls', true)
+				this.preview.pause();
 				return new Promise(resolve => resolve(data))
 			})
 
 	}
 
 }
+
+export default VideoRecorder;
