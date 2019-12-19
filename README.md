@@ -28,5 +28,4 @@ vr.download(filename)
 vr.getBlob()
 vr.isSupport()
 ```
-<a href="https://jsfiddle.net/hitesh399/j2mxbeqy/?utm_source=website&utm_medium=embed&utm_campaign=j2mxbeqy" target="_blank">JS Example
-alt="JS Example" /></a>
+<a href="https://jsfiddle.net/hitesh399/j2mxbeqy/?utm_source=website&utm_medium=embed&utm_campaign=j2mxbeqy" target="_blank">JS Example</a>
