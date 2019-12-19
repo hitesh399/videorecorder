@@ -1,6 +1,6 @@
 {
   "name": "js-video-recorder",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "",
   "main": "dist/videorecorder.js",
   "scripts": {
@@ -9,6 +9,10 @@
   "keywords": [
     "Video recorder",
     "js video recorder"
+  ],
+  "files": [
+    "dist/js-video-recorder.js",
+    "dist/videorecorder.js"
   ],
   "author": "",
   "license": "ISC",
