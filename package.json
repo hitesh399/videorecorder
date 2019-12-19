@@ -6,7 +6,10 @@
   "scripts": {
     "build": "babel src/index.js -o dist/videorecorder.js"
   },
-  "keywords": ["Video recorder", "js video recorder"],
+  "keywords": [
+    "Video recorder",
+    "js video recorder"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -14,7 +17,8 @@
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-minify": "^0.5.1",
-    "core-js": "^3.4.1"
+    "core-js": "^3.6.0"
   }
 }
