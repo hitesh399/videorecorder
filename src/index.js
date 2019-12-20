@@ -136,4 +136,4 @@ class VideoRecorder {
 
 }
 
-// export default VideoRecorder;
+export default VideoRecorder;
