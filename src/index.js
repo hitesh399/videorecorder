@@ -24,6 +24,8 @@ class VideoRecorder {
 		this.recording.muted = true
 		this.preview.removeAttribute('controls')
 		this.preview.pause();
+		this.preview.muted = true
+		this.preview.volume = 0
 		this.data = [];
 		navigator.mediaDevices.getUserMedia(this.mediaSetting)
 			.then(stream => {
@@ -111,7 +113,9 @@ class VideoRecorder {
 			})
 	}
 	_stop() {
-
+		
+		this.preview.muted = false
+		this.preview.volume = 1
 		if (!this.recorder) return
 
 		let stopped = new Promise((resolve, reject) => {
@@ -131,6 +135,7 @@ class VideoRecorder {
 				this.recording.remove();
 				this.preview.setAttribute('controls', true)
 				this.preview.pause();
+				
 				return new Promise(resolve => resolve(data))
 			})
 
