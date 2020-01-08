@@ -1,10 +1,11 @@
 {
   "name": "js-video-recorder",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/videorecorder.js",
   "scripts": {
-    "build": "babel src/index.js -o dist/videorecorder.js"
+    "build": "babel src/index.js -o dist/videorecorder.js",
+    "build:js": "babel src/index.js -o dist/js-video-recorder.js"
   },
   "keywords": [
     "Video recorder",
