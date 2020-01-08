@@ -24,7 +24,6 @@ class VideoRecorder {
 		this.recording.muted = true
 		this.preview.removeAttribute('controls')
 		this.preview.pause();
-
 		this.data = [];
 		navigator.mediaDevices.getUserMedia(this.mediaSetting)
 			.then(stream => {
