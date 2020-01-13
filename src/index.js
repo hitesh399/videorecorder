@@ -14,12 +14,24 @@ class VideoRecorder {
 	}
 
 	stop() {
-		this._stop();
+		return this._stop();
 	}
 	isSupport() {
 		return typeof MediaRecorder === 'function' && typeof navigator.mediaDevices === 'object'
 	}
+	updateSettings(settings, start = true) {
+		this.mediaSetting = settings
+		if (this.recorder && this.recorder.state == "recording") {
+			return this.stop()
+		}
+		if (start) {
+			return this.start()
+		}
+	}
 	start() {
+		if (!this.preview) {
+			this.preview = document.getElementById(this.videoPreviewId);
+		}
 		this.recording = document.createElement("video");		
 		this.recording.muted = true
 		this.preview.removeAttribute('controls')
@@ -27,7 +39,7 @@ class VideoRecorder {
 		this.preview.muted = true
 		this.preview.volume = 0
 		this.data = [];
-		navigator.mediaDevices.getUserMedia(this.mediaSetting)
+		return navigator.mediaDevices.getUserMedia(this.mediaSetting)
 			.then(stream => {
 				this.preview.src = null;
 				this.preview.srcObject = stream;
