@@ -22,23 +22,33 @@ class VideoRecorder {
 	updateSettings(settings, start = true) {
 		this.mediaSetting = settings
 		if (this.recorder && this.recorder.state == "recording") {
-			return this.stop()
+				this.pause()
+				return this.testCamera().then(() => {
+					this.preview.removeAttribute('controls')
+					this.recorder.resume();
+				})
 		}
 		if (start) {
 			return this.start()
+		} else {
+			this.testCamera()
 		}
 	}
-	start() {
+	testCamera() {
+		
 		if (!this.preview) {
 			this.preview = document.getElementById(this.videoPreviewId);
 		}
-		this.recording = document.createElement("video");		
-		this.recording.muted = true
+		const alreadyHasRecord = this.recording
+
+		if (!this.recording) {
+			this.recording = document.createElement("video");
+			this.recording.muted = true
+		}
 		this.preview.removeAttribute('controls')
 		this.preview.pause();
 		this.preview.muted = true
-		this.preview.volume = 0
-		this.data = [];
+		this.preview.volume = 0	
 		return navigator.mediaDevices.getUserMedia(this.mediaSetting)
 			.then(stream => {
 				this.preview.src = null;
@@ -46,8 +56,13 @@ class VideoRecorder {
 				this.preview.play()
 				this.preview.captureStream = this.preview.captureStream || this.preview.mozCaptureStream;
 				return new Promise(resolve => this.preview.onplaying = resolve);
-			}).then(() => this._startRecording())
+			})
 
+	}
+	start() {
+		this.data = [];		
+		this.recording = null
+		return this.testCamera().then(() => this._startRecording())
 	}
 	pause() {
 		this.preview.pause()
