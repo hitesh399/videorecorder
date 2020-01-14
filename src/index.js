@@ -22,25 +22,19 @@ class VideoRecorder {
 	updateSettings(settings, start = true) {
 		this.mediaSetting = settings
 		if (this.recorder && this.recorder.state == "recording") {
-				this.pause()
-				return this.testCamera().then(() => {
-					this.preview.removeAttribute('controls')
-					this.recorder.resume();
-				})
+			return this.stop().then(() => Promise.resolve('was_recording') )
 		}
 		if (start) {
 			return this.start()
 		} else {
-			this.testCamera()
+			return this.testCamera()
 		}
 	}
 	testCamera() {
-		
+
 		if (!this.preview) {
 			this.preview = document.getElementById(this.videoPreviewId);
 		}
-		const alreadyHasRecord = this.recording
-
 		if (!this.recording) {
 			this.recording = document.createElement("video");
 			this.recording.muted = true
@@ -61,8 +55,12 @@ class VideoRecorder {
 	}
 	start() {
 		this.data = [];		
-		this.recording = null
-		return this.testCamera().then(() => this._startRecording())
+		if (this.recording) {
+			this.recording.remove()
+			this.recording = null	
+		}	
+		this.recorder = null;
+		return this.testCamera().then(() => Promise.resolve(this._startRecording()))  
 	}
 	pause() {
 		this.preview.pause()
@@ -90,7 +88,7 @@ class VideoRecorder {
 			this.data.push(event.data);
 			this._updatePlayer()
 		}
-		this.recorder.start();
+		return this.recorder.start();
 	}
 
 	_pauseRecorder() {
@@ -143,6 +141,7 @@ class VideoRecorder {
 		
 		this.preview.muted = false
 		this.preview.volume = 1
+		this.preview.pause();				
 		if (!this.recorder) return
 
 		let stopped = new Promise((resolve, reject) => {
@@ -155,14 +154,13 @@ class VideoRecorder {
 				recorded
 			]).then(() => this.data)
 			.then((data) => {
-				this.recorder = null;				
+				// this.recorder = null;				
 				this.preview.srcObject.getTracks().forEach(track => track.stop());
 				this.preview.srcObject = null;
 				this.preview.src = this.recording.src
-				this.recording.remove();
-				this.preview.setAttribute('controls', true)
-				this.preview.pause();
-				
+				// this.recording.remove();
+				// this.recording = null
+				this.preview.setAttribute('controls', true)				
 				return new Promise(resolve => resolve(data))
 			})
 
@@ -170,4 +168,4 @@ class VideoRecorder {
 
 }
 
-export default VideoRecorder;
+// export default VideoRecorder;
